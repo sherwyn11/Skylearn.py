@@ -34,7 +34,7 @@ def upload():
         ext = data.filename.split('.')[1]
         if(ext in exts):
             data.save('uploads/' + data.filename)
-            return 'File saved to uploads directory@'
+            return 'File saved to uploads directory!'
         else:
             return 'File type not accepted!'
     return render_template('upload.html')
