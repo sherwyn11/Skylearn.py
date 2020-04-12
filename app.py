@@ -1,27 +1,16 @@
-from modules.lin_regress import linRegression
-from modules.svm import svm
-from modules.kmeans import kmeans
-from modules.kmedoids import kmedoids
-from modules.lda import lda
-from flask import Flask, request, jsonify, render_template
+from flask import *
 from flask_cors import CORS
 import os.path
+import modules.logistic as lg
+import modules.naive_bayes as nb
+import pandas as pd
 
 save_path = '/uploads/'
 exts = ['csv', 'json', 'yaml']
 
 app = Flask(__name__)
-services = {
-    'svm': svm,
-    'lin_regress': linRegression,
-    'kmeans': kmeans,
-    'kmedoids': kmedoids,
-    'lda': lda
-}
+app.secret_key = "dnaz&sherwu"  
 
-cors = CORS(app, resources={
-    r'/{}'.format(service): {"origins": "*"} for service in services
-})
 
 @app.route('/', methods=['GET'])
 def test():
@@ -34,23 +23,48 @@ def upload():
         ext = data.filename.split('.')[1]
         if(ext in exts):
             data.save('uploads/' + data.filename)
+            session['fname'] = data.filename 
+            session['ext'] = ext
             return 'File saved to uploads directory!'
         else:
             return 'File type not accepted!'
     return render_template('upload.html')
 
 
-@app.route('/<string:service_name>', methods=['POST'])
-def service(service_name):
-    try:
-        service_func = services[service_name]
-    except:
-        # service does not exist
-        return None, 401
-    
-    data = request.get_json()
-    output_data = service_func(data)
-    return jsonify(output_data)
+@app.route('/classify', methods=['GET', 'POST'])
+def classify():
+    acc = 0
+    if request.method == 'POST':
+        classifier = int(request.form['classifier'])
+        hidden_val = int(request.form['hidden'])
+        if(hidden_val == 0):
+            data = request.files['choiceVal']
+            ext = data.filename.split('.')[1]
+            if(ext in exts):
+                data.save('uploads/test.' + ext)
+            else:
+                return 'File type not accepted!'
+            choiceVal = 0
+        else:
+            choiceVal = int(request.form['choiceVal'])
+
+        if (classifier == 0):
+            ret_vals = lg.logisticReg(choiceVal, hidden_val)
+            if (hidden_val == 0 or hidden_val == 1):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
+            elif (hidden_val == 2):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = ret_vals[1], conf_matrix = ret_vals[2], choice = hidden_val, classifier_used = classifier)
+
+        else:
+            ret_vals = nb.naiveBayes(choiceVal, hidden_val)
+            if (hidden_val == 0 or hidden_val == 1):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
+            elif (hidden_val == 2):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = ret_vals[1], conf_matrix = ret_vals[2], choice = hidden_val, classifier_used = classifier)
+
+
+    elif request.method == 'GET':
+        return render_template('classifier_page.html')
 
 
 if __name__ == "__main__":

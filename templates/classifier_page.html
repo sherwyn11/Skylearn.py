@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        table, th, td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body style="padding:10px;">
+    <form id="myForm" method="POST" action="/classify" enctype="multipart/form-data">
+        <label>Classifier</label><br>
+        <select name="classifier">
+            <option value="0">Logistic</option>
+            <option value="1">Naïve-Bayes Classifier</option>
+        </select><br><br>
+
+        <label>Choose Test Method</label><br>
+        <select name="chooseTestMethod" onchange="create(this.value)">
+            <option disabled selected>Choose</option>
+            <option value="0">Upload Test</option>
+            <option value="1">Split Dataset</option>
+            <option value="2">Provide Cross Validation</option>
+        </select><br><br>
+
+        <div id="choiceDiv" name="choiceDiv"></div><br><br>
+
+        <button type="submit">Submit</button>
+    </form><br>
+
+
+    {% if classifier_used == 0 %}
+        <h1>Classifier used : Logistic Regression</h1>
+    {% else %}
+        <h1>Classifier used : Naïve-Bayes Classifier</h1>
+    {% endif %}
+
+    <br>
+
+    {% if choice == 1 or choice == 0 %}
+        <p>Accuracy is: <b>{{acc}} %</b></p><br>
+    {% else %}
+        <h3>Accuracies: </h3>
+        {% for table in acc %}
+            <p>Accuracy for fold - {{ loop.index }}:</p>
+            <b>{{ table }} %</b>
+            <br>
+        {% endfor %}
+        <br>
+    {% endif %}
+
+
+    {% if choice == 1 or choice == 0%}
+        <p>Classification Report: </p>
+        {% for table in report %}
+            {{ table|safe }}
+        {% endfor %}
+    {% else %}
+        <h3>Classification Reports: </h3>
+        {% for x in report %}
+            <p>Classification Report for fold - {{ loop.index }}:</p>
+            {% for table in x %}
+                {{ table|safe }}
+            {% endfor %}
+            <br>
+        {% endfor %}
+    {% endif %}
+
+
+    <br>
+
+
+    {% if choice == 1 or choice == 0 %}
+        <p>Confusion Matrix: </p>
+        {% for table in conf_matrix %}
+            {{ table|safe }}
+        {% endfor %}
+    {% else %}
+        <h3>Confusion Matrices: </h3>
+        {% for x in conf_matrix %}
+            <p>Confusion Matrix for fold - {{ loop.index }}:</p>
+            {% for table in x %}
+                {{ table|safe }}
+            {% endfor %}
+            <br>
+        {% endfor %}
+    {% endif %}
+
+
+    <script>
+        function create(choice){
+            var divClass = document.getElementById("choiceDiv");
+            while (divClass.hasChildNodes()) {  
+                divClass.removeChild(divClass.firstChild);
+            }
+            var label = document.createElement("label");
+
+            var newChoice = document.createElement("input");
+            newChoice.id = "choiceVal";
+            newChoice.name = "choiceVal";
+
+            var hiddenTag = document.createElement("input");
+            hiddenTag.name = "hidden";
+            hiddenTag.id = "hidden";
+            hiddenTag.setAttribute("value", choice);
+            hiddenTag.style.visibility = "hidden";
+
+            if(choice == 0){
+                label.innerHTML = "Upload Test Data:";
+                newChoice.setAttribute("type", "file");
+            }else if(choice == 1){
+                label.innerHTML = "Enter Test set Split Percentage:";
+                newChoice.setAttribute("type", "text");
+            }else{
+                label.innerHTML = "Enter k value for K-Fold";
+                newChoice.setAttribute("type", "text");
+            }
+
+            divClass.appendChild(label);
+            divClass.appendChild(document.createElement("br"));
+            divClass.appendChild(newChoice);
+            divClass.appendChild(hiddenTag);
+        }
+    </script>
+</body>
+</html>
