@@ -22,14 +22,17 @@ def classification_report_with_accuracy_score(y_true, y_pred):
     return accuracy_score(y_true, y_pred)
 
 
-def naiveBayes(value, choice):
+def naiveBayes(value, choice, scale_val, encode_val):
+
+    print(scale_val, encode_val)
+
     classification_Reports.clear()
     confusion_Matrix.clear()
     accuracies.clear()
     target_Names.clear()
 
     if (session['ext'] == 'csv'):
-        df = pd.read_csv('clean/clean.csv')
+        df = pd.read_csv('clean/clean3.csv')
     elif (session['ext'] == 'json'):
         df = pd.read_json('clean/clean.json')
 
@@ -43,10 +46,13 @@ def naiveBayes(value, choice):
         size = value / 100
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=40)
         
-        X_train = sc.fit_transform(X_train) 
-        X_test = sc.transform(X_test)
-        y_train = le.fit_transform(y_train)
-        y_test = le.transform(y_test)
+        if (scale_val == 1):
+            X_train = sc.fit_transform(X_train) 
+            X_test = sc.transform(X_test)
+
+        if (encode_val == 1):
+            y_train = le.fit_transform(y_train)
+            y_test = le.transform(y_test)
 
         clf = GaussianNB().fit(X_train, y_train)
         pred_vals = clf.predict(X_test)
@@ -64,13 +70,25 @@ def naiveBayes(value, choice):
         k = value
         kfold = KFold(n_splits=k, random_state=7, shuffle=True)
         model = GaussianNB()
-        y = le.fit_transform(y)
+        
+        if (scale_val == 1):
+            X = sc.fit_transform(X) 
+        
+        if (encode_val == 1):
+            y = le.fit_transform(y)
+
         predicted = cross_val_score(model, X, y, cv=kfold, scoring=make_scorer(classification_report_with_accuracy_score))
         
         return [accuracies, classification_Reports, confusion_Matrix]
     
     elif (choice == 0):
-        y = le.fit_transform(y)
+        
+        if (scale_val == 1):
+            X = sc.fit_transform(X) 
+        
+        if (encode_val == 1):
+            y = le.fit_transform(y)
+
         clf = GaussianNB().fit(X, y)
         
         if (session['ext'] == 'csv'):
@@ -81,10 +99,10 @@ def naiveBayes(value, choice):
         X_test = df.iloc[ : , 1 : -1]
         y = df.iloc[ : , -1]
 
-        X_train = sc.fit_transform(X_train) 
-        X_test = sc.transform(X_test)
-        y_train = le.fit_transform(y_train)
-        y_test = le.transform(y_test)
+        if (scale_val == 1):
+            X_test = sc.transform(X_test)
+        if (encode_val == 1):
+            y_test = le.transform(y_test)
 
         pred_vals = clf.predict(X_test)
         acc = accuracy_score(y_test, pred_vals)

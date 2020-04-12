@@ -30,7 +30,14 @@
 
         <div id="choiceDiv" name="choiceDiv"></div><br><br>
 
-        <button type="submit">Submit</button>
+        <label>Perform Scaling?</label> &nbsp;<input type="checkbox" id="scale" name="scale" onchange="update(0)"/><br><br>
+        <input type="hidden" name="scale_hidden" id="scale_hidden" value="0"/>
+
+        <label>Perform Encoding?</label> &nbsp;<input type="checkbox" id="encode" name="encode" onchange="update(1)"/><br><br>
+        <input type="hidden" name="encode_hidden" id="encode_hidden" value="0"/>
+
+        <button type="submit">Start</button>
+
     </form><br>
 
 
@@ -126,6 +133,27 @@
             divClass.appendChild(newChoice);
             divClass.appendChild(hiddenTag);
         }
+
+        function update(choice){
+            if(choice == 0){
+                var enc = document.getElementById('scale');
+                var hid = document.getElementById('scale_hidden');
+                if(enc.checked){
+                    hid.setAttribute("value", "1");
+                }else{
+                    hid.setAttribute("value", "0");
+                } 
+            }else{
+                var enc = document.getElementById('encode');
+                var hid = document.getElementById('encode_hidden');
+                if(enc.checked){
+                    hid.setAttribute("value", "1");
+                }else{
+                    hid.setAttribute("value", "0");
+                }
+            }
+        }
+
     </script>
 </body>
 </html>

@@ -36,6 +36,9 @@ def classify():
     if request.method == 'POST':
         classifier = int(request.form['classifier'])
         hidden_val = int(request.form['hidden'])
+        scale_val = int(request.form['scale_hidden'])
+        encode_val = int(request.form['encode_hidden'])
+
         if(hidden_val == 0):
             data = request.files['choiceVal']
             ext = data.filename.split('.')[1]
@@ -48,14 +51,14 @@ def classify():
             choiceVal = int(request.form['choiceVal'])
 
         if (classifier == 0):
-            ret_vals = lg.logisticReg(choiceVal, hidden_val)
+            ret_vals = lg.logisticReg(choiceVal, hidden_val, scale_val, encode_val)
             if (hidden_val == 0 or hidden_val == 1):
                 return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
             elif (hidden_val == 2):
                 return render_template('classifier_page.html', acc = ret_vals[0], report = ret_vals[1], conf_matrix = ret_vals[2], choice = hidden_val, classifier_used = classifier)
 
         else:
-            ret_vals = nb.naiveBayes(choiceVal, hidden_val)
+            ret_vals = nb.naiveBayes(choiceVal, hidden_val, scale_val, encode_val)
             if (hidden_val == 0 or hidden_val == 1):
                 return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
             elif (hidden_val == 2):
