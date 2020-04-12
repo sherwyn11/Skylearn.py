@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from flask import session
-from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, make_scorer
 
@@ -36,15 +36,19 @@ def naiveBayes(value, choice):
     X = df.iloc[ : , 1 : -1]
     y = df.iloc[ : , -1]
     target_Names.append(list(df.iloc[ : , -1].unique()))
-    le = preprocessing.LabelEncoder()
+    le = LabelEncoder()
+    sc = StandardScaler()
 
     if (choice == 1):
         size = value / 100
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=40)
+        
+        X_train = sc.fit_transform(X_train) 
+        X_test = sc.transform(X_test)
         y_train = le.fit_transform(y_train)
         y_test = le.transform(y_test)
-        clf = GaussianNB().fit(X_train, y_train)
 
+        clf = GaussianNB().fit(X_train, y_train)
         pred_vals = clf.predict(X_test)
 
         acc = accuracy_score(y_test, pred_vals)
@@ -77,7 +81,11 @@ def naiveBayes(value, choice):
         X_test = df.iloc[ : , 1 : -1]
         y = df.iloc[ : , -1]
 
-        y_test = le.transform(y)
+        X_train = sc.fit_transform(X_train) 
+        X_test = sc.transform(X_test)
+        y_train = le.fit_transform(y_train)
+        y_test = le.transform(y_test)
+
         pred_vals = clf.predict(X_test)
         acc = accuracy_score(y_test, pred_vals)
         report = classification_report(y_test, pred_vals, target_names=list(df.iloc[:,-1].unique()), output_dict=True)

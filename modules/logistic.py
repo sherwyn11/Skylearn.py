@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from flask import session
-from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, make_scorer
 
@@ -30,22 +30,26 @@ def logisticReg(value, choice):
     target_Names.clear()
 
     if (session['ext'] == 'csv'):
-        df = pd.read_csv('clean/clean.csv')
+        df = pd.read_csv('clean/clean1.csv')
     elif (session['ext'] == 'json'):
         df = pd.read_json('clean/clean.json')
 
     X = df.iloc[ : , 1 : -1]
     y = df.iloc[ : , -1]
     target_Names.append(list(df.iloc[ : , -1].unique()))
-    le = preprocessing.LabelEncoder()
+    le = LabelEncoder()
+    sc = StandardScaler()
 
     if (choice == 1):
         size = value / 100
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=40)
+        
+        X_train = sc.fit_transform(X_train) 
+        X_test = sc.transform(X_test)
         y_train = le.fit_transform(y_train)
         y_test = le.transform(y_test)
+        
         clf = LogisticRegression(random_state=0, solver='lbfgs', multi_class='auto', max_iter=150).fit(X_train, y_train)
-
         pred_vals = clf.predict(X_test)
 
         acc = accuracy_score(y_test, pred_vals)
@@ -61,12 +65,14 @@ def logisticReg(value, choice):
         k = value
         kfold = KFold(n_splits=k, random_state=7, shuffle=True)
         model = LogisticRegression(random_state=0, solver='lbfgs', multi_class='auto', max_iter=150)
+        X = sc.fit_transform(X) 
         y = le.fit_transform(y)
         predicted = cross_val_score(model, X, y, cv=kfold, scoring=make_scorer(classification_report_with_accuracy_score))
         
         return [accuracies, classification_Reports, confusion_Matrix]
     
     elif (choice == 0):
+        X = sc.fit_transform(X)
         y = le.fit_transform(y)
         clf = LogisticRegression(random_state=0, solver='lbfgs', multi_class='auto', max_iter=150).fit(X, y)
         
@@ -76,9 +82,11 @@ def logisticReg(value, choice):
             df = pd.read_json('uploads/test.json')
 
         X_test = df.iloc[ : , 1 : -1]
-        y = df.iloc[ : , -1]
+        y_test = df.iloc[ : , -1]
 
-        y_test = le.transform(y)
+        X_test = sc.transform(X_test)
+        y_test = le.transform(y_test)
+
         pred_vals = clf.predict(X_test)
         acc = accuracy_score(y_test, pred_vals)
         report = classification_report(y_test, pred_vals, target_names=list(df.iloc[:,-1].unique()), output_dict=True)
