@@ -2,6 +2,7 @@ from flask import *
 import os.path
 import modules.logistic as lg
 import modules.naive_bayes as nb
+import visualization.visualize as vis
 import pandas as pd
 
 save_path = '/uploads/'
@@ -68,6 +69,13 @@ def classify():
     elif request.method == 'GET':
         return render_template('classifier_page.html')
 
+@app.route('/visualize', methods=['GET', 'POST'])
+def visualize():
+    if (request.method == 'POST'):
+        vis.pair_plot()
+        return render_template('visualize.html', posted = 1)
+    else:
+        return render_template('visualize.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
