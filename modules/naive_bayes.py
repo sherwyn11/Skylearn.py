@@ -24,8 +24,6 @@ def classification_report_with_accuracy_score(y_true, y_pred):
 
 def naiveBayes(value, choice, scale_val, encode_val):
 
-    print(scale_val, encode_val)
-
     classification_Reports.clear()
     confusion_Matrix.clear()
     accuracies.clear()
