@@ -18,6 +18,7 @@
         <select name="classifier">
             <option value="0">Logistic</option>
             <option value="1">Naïve-Bayes Classifier</option>
+            <option value="2">Linear-SV Classifier</option>
         </select><br><br>
 
         <label>Choose Test Method</label><br>
@@ -43,8 +44,10 @@
 
     {% if classifier_used == 0 %}
         <h1>Classifier used : Logistic Regression</h1>
-    {% else %}
+    {% elif classifier_used == 1%}
         <h1>Classifier used : Naïve-Bayes Classifier</h1>
+    {% else %}
+        <h1>Classifier used : Linear-SV Classifier</h1>
     {% endif %}
 
     <br>

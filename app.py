@@ -2,6 +2,7 @@ from flask import *
 import os.path
 import modules.logistic as lg
 import modules.naive_bayes as nb
+import modules.linear_svc as lsvc
 import visualization.visualize as vis
 import pandas as pd
 
@@ -58,8 +59,15 @@ def classify():
             elif (hidden_val == 2):
                 return render_template('classifier_page.html', acc = ret_vals[0], report = ret_vals[1], conf_matrix = ret_vals[2], choice = hidden_val, classifier_used = classifier)
 
-        else:
+        elif (classifier == 1):
             ret_vals = nb.naiveBayes(choiceVal, hidden_val, scale_val, encode_val)
+            if (hidden_val == 0 or hidden_val == 1):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
+            elif (hidden_val == 2):
+                return render_template('classifier_page.html', acc = ret_vals[0], report = ret_vals[1], conf_matrix = ret_vals[2], choice = hidden_val, classifier_used = classifier)
+
+        elif (classifier == 2):
+            ret_vals = lsvc.lin_svc(choiceVal, hidden_val, scale_val, encode_val)
             if (hidden_val == 0 or hidden_val == 1):
                 return render_template('classifier_page.html', acc = ret_vals[0], report = [ret_vals[1].to_html()], conf_matrix = [ret_vals[2].to_html()], choice = hidden_val, classifier_used = classifier)
             elif (hidden_val == 2):
