@@ -1,5 +1,4 @@
 from flask import *
-from flask_cors import CORS
 import os.path
 import modules.logistic as lg
 import modules.naive_bayes as nb
