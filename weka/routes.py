@@ -164,6 +164,7 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -174,6 +175,7 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
 
         elif classifier == 1:
@@ -207,6 +209,7 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -217,6 +220,7 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
 
         elif classifier == 2:
@@ -250,6 +254,7 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -260,10 +265,11 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+                    title="Classify"
                 )
 
     elif request.method == "GET":
-        return render_template("classifier_page.html", active="classify")
+        return render_template("classifier_page.html", active="classify", title="Classify")
 
 
 @app.route("/clear", methods=["GET"])
@@ -299,6 +305,7 @@ def visualize():
             active = 'visualize',
             x_col_name = str(x_col),
             y_col_name = str(y_col),
+            title="Visualize"
         )
 
     else:
@@ -310,4 +317,5 @@ def visualize():
             src = 'img/pairplot.png', 
             posted = 0, 
             active = 'visualize',
+            title="Visualize"
         )
