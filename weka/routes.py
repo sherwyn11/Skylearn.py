@@ -10,6 +10,7 @@ from flask import (
     abort,
     Flask,
     jsonify,
+    render_template_string
 )
 from weka.preprocessing import generic_preprocessing as gp
 from weka.modules import logistic as lg
@@ -18,9 +19,12 @@ from weka.modules import linear_svc as lsvc
 from weka.visualization import visualize as vis
 from weka import app
 import os.path
+import numpy as np
+import pandas as pd
 
 save_path = "weka/uploads/"
 exts = ["csv", "json", "yaml"]
+
 
 
 @app.route("/")
@@ -96,6 +100,11 @@ def preprocess():
         )
 
 
+@app.route('/clear', methods=['GET', 'POST'])
+def clear():
+    session.clear()
+    return render_template('preprocess.html')
+
 @app.route('/classify', methods=['GET', 'POST'])
 def classify():
     acc = 0
@@ -144,7 +153,21 @@ def classify():
 @app.route('/visualize', methods=['GET', 'POST'])
 def visualize():
     if (request.method == 'POST'):
-        vis.pair_plot()
-        return render_template('visualize.html', posted = 1)
+        x_col = request.form['x_col']
+        y_col = request.form['y_col']
+
+        df = vis.xy_plot(x_col, y_col)
+        heights = np.array(df[x_col]).tolist()
+        weights = np.array(df[y_col]).tolist()
+
+        newlist = []
+        for h, w in zip(heights, weights):
+            newlist.append({'x': h, 'y': w})
+        ugly_blob = str(newlist).replace('\'', '')
+
+        columns = vis.get_columns()
+        return render_template('visualize.html', cols = columns, src = 'img/pairplot.png', xy_src = 'img/fig.png', posted = 1, data=ugly_blob)
+
     else:
-        return render_template('visualize.html')
+        columns = vis.get_columns()
+        return render_template('visualize.html', cols = columns, src = 'img/pairplot.png', posted = 0)

@@ -5,15 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body>
-    <h1>Visualize</h1><br><br>
-    {% if posted == 1 %}
-        <img src="static/img/pairplot1.png" height="500px" width="500px" alt="img not loaded"/>
-    {% endif %}
 
+<body style="padding: 10px;">
+    <h1>Visualize</h1><br><br>
+    <img src="{{ url_for('static', filename='img/pairplot.png') }}" height="500px" width="500px" alt="img not loaded"/>
     <form action="/visualize" method="POST">
+
+        <label>Select X</label><br>
+        <select name="x_col">
+            {% for each in cols %}
+                <option value="{{each}}" {% if each == "x_col" %} selected {% endif %}>{{each}}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label>Select Y</label><br>
+        <select name="y_col">
+            {% for each in cols %}
+                <option value="{{each}}" {% if each == "y_col" %} selected {% endif %}>{{each}}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
         <button type="submit">Visualize</button>
+        
+        {% if posted == 1 %}
+            {% if data %}
+                <canvas id="myChart1" width="500px" height="500px"></canvas>
+                <script type="text/javascript">
+                    new Chart.Scatter(document.getElementById("myChart1"), {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Scatter Plot',
+                            data: {{ data }},
+                            showLine: false,
+                            borderColor: "black",
+                            backgroundColor: "red"
+                            }]
+                        },
+                        options: {
+                            responsive: false
+                        }
+                      });
+                </script>
+            {% endif %}
+        {% endif %}
+
     </form>
+
+
 </body>
 </html>
