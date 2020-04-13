@@ -14,10 +14,22 @@ target_Names = []
 def classification_report_with_accuracy_score(y_true, y_pred):
     report = classification_report(y_true, y_pred,target_names=target_Names[0], output_dict=True)
     temp = pd.DataFrame(report).transpose()
-    classification_Reports.append([temp.to_html().strip('\n')])
+    classification_Reports.append([temp.to_html(classes=[
+                    "table",
+                    "table-bordered",
+                    "table-striped",
+                    "table-hover",
+                    "thead-light",
+                ]).strip('\n')])
     matrix = confusion_matrix(y_true, y_pred)
     temp = pd.DataFrame(matrix).transpose()
-    confusion_Matrix.append([temp.to_html()])
+    confusion_Matrix.append([temp.to_html(classes=[
+                    "table",
+                    "table-bordered",
+                    "table-striped",
+                    "table-hover",
+                    "thead-light",
+                ])])
     accuracies.append(round(100 * accuracy_score(y_true, y_pred), 2))
     return accuracy_score(y_true, y_pred)
 
@@ -30,7 +42,7 @@ def naiveBayes(value, choice, scale_val, encode_val):
     target_Names.clear()
 
     if (session['ext'] == 'csv'):
-        df = pd.read_csv('weka/clean/clean3.csv')
+        df = pd.read_csv('weka/clean/clean.csv')
     elif (session['ext'] == 'json'):
         df = pd.read_json('weka/clean/clean.json')
 

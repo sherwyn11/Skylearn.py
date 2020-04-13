@@ -8,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> {% if title %}
@@ -22,10 +22,9 @@
 <body>
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background: #222;">
-            <div class="container">
-
+            <!-- <div class="container"> -->
                 <a class="navbar-brand mr-4" href="/">
-                    <i class="fa fa-cogs fa-spin" width="30" height="30" class="d-inline-block align-top"></i> Weka
+                    <i class="fa fa-cogs fa-spin" width="30" height="30" class="d-inline-block align-top"></i> Skylearn.py
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,46 +38,65 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
 
-                        <a class="nav-item nav-link" href="">New</a>
+                        <a class="nav-item nav-link" href="{{ url_for('clear') }}">Clear</a>
 
                     </div>
                 </div>
-            </div>
+            <!-- </div> -->
         </nav>
     </header>
-    <div id="mySidenav" class="sidenav bg-dark" style="margin-top: 56px;">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    {%if active=='classify'%}
+    <div id="mySidenav" class="sidenav bg-dark" style="margin-top: 56px; width:350px;">
         <form id="myForm" method="POST" action="/classify" enctype="multipart/form-data">
-            <label>Classifier</label><br>
-            <select name="classifier">
+            <div class="form-group">
+                <label for="classifier">Classifier</label><br>
+                <select class="form-control" name="classifier" id="classifier">
             <option value="0">Logistic</option>
             <option value="1">Naïve-Bayes Classifier</option>
             <option value="2">Linear-SV Classifier</option>
-        </select><br><br>
-
-            <label>Choose Test Method</label><br>
-            <select name="chooseTestMethod" onchange="create(this.value)">
-            <option disabled selected>Choose</option>
-            <option value="0">Upload Test</option>
-            <option value="1">Split Dataset</option>
-            <option value="2">Provide Cross Validation</option>
-        </select><br><br>
-
-            <div id="choiceDiv" name="choiceDiv"></div><br><br>
-
-            <label>Perform Scaling?</label> &nbsp;<input type="checkbox" id="scale" name="scale" onchange="update(0)" /><br><br>
+            </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="chooseTestMethod">Choose Test Method</label><br>
+                <select class="form-control" name="chooseTestMethod" id="chooseTestMethod" onchange="create(this.value)">
+                  <option class="dropdown-item" disabled selected>Choose</option>
+                  <option class="dropdown-item" value="0">Upload Test</option>
+                  <option class="dropdown-item" value="1">Split Dataset</option>
+                  <option class="dropdown-item" value="2">Provide Cross Validation</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <div id="choiceDiv" name="choiceDiv"></div>
+            </div>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" id="scale" name="scale" onchange="update(0)">
+                    </div>
+                </div>
+                <div class="form-control" style="margin-right: 32px;">Scale?</div>
+            </div>
             <input type="hidden" name="scale_hidden" id="scale_hidden" value="0" />
 
-            <label>Perform Encoding?</label> &nbsp;<input type="checkbox" id="encode" name="encode" onchange="update(1)" /><br><br>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" id="encode" name="encode" onchange="update(1)">
+
+                    </div>
+                </div>
+                <div class="form-control" style="margin-right: 32px;">Encode?</div>
+            </div>
             <input type="hidden" name="encode_hidden" id="encode_hidden" value="0" />
 
-            <button type="submit">Start</button>
-
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Start</button>
+            </div>
         </form><br>
     </div>
-
-    <!-- Use any element to open the sidenav -->
-    <span onclick="openNav()">open</span>
+    <i class="fa fa-cog fa-spin" width="50" height="50" class="d-inline-block align-top" style="margin-left: 60px;" onclick="openNav()"></i> {%endif%}
     <main id="main" role="main" class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -94,14 +112,14 @@
     <script>
         /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
         function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("mySidenav").style.width = "350px";
+            document.getElementById("main").style.marginLeft = "350px";
         }
 
         /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
         function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
+            document.getElementById("mySidenav").style.width = "0px";
+            document.getElementById("main").style.marginLeft = "0px";
         }
     </script>
 

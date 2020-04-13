@@ -139,8 +139,28 @@ def classify():
                 return render_template(
                     "classifier_page.html",
                     acc=ret_vals[0],
-                    report=[ret_vals[1].to_html()],
-                    conf_matrix=[ret_vals[2].to_html()],
+                    report=[
+                        ret_vals[1].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
+                    conf_matrix=[
+                        ret_vals[2].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
@@ -162,8 +182,28 @@ def classify():
                 return render_template(
                     "classifier_page.html",
                     acc=ret_vals[0],
-                    report=[ret_vals[1].to_html()],
-                    conf_matrix=[ret_vals[2].to_html()],
+                    report=[
+                        ret_vals[1].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
+                    conf_matrix=[
+                        ret_vals[2].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
@@ -185,8 +225,28 @@ def classify():
                 return render_template(
                     "classifier_page.html",
                     acc=ret_vals[0],
-                    report=[ret_vals[1].to_html()],
-                    conf_matrix=[ret_vals[2].to_html()],
+                    report=[
+                        ret_vals[1].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
+                    conf_matrix=[
+                        ret_vals[2].to_html(
+                            classes=[
+                                "table",
+                                "table-bordered",
+                                "table-striped",
+                                "table-hover",
+                                "thead-light",
+                            ]
+                        )
+                    ],
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
@@ -204,6 +264,12 @@ def classify():
 
     elif request.method == "GET":
         return render_template("classifier_page.html", active="classify")
+
+
+@app.route("/clear", methods=["GET"])
+def clear():
+    session.clear()
+    return redirect("/")
 
 
 @app.route('/visualize', methods=['GET', 'POST'])

@@ -6,101 +6,136 @@
         padding: 10px;
     }
 </style>
-<div class="row">
-
-    <div class="col-lg-9">
-
-        {% if classifier_used == 0 %}
-        <h1>Classifier used : Logistic Regression</h1>
-        {% elif classifier_used == 1%}
-        <h1>Classifier used : Naïve-Bayes Classifier</h1>
-        {% else %}
-        <h1>Classifier used : Linear-SV Classifier</h1>
-        {% endif %}
-
-        <br> {% if choice == 1 or choice == 0 %}
-        <p>Accuracy is: <b>{{acc}} %</b></p><br> {% else %}
-        <h3>Accuracies: </h3>
-        {% for table in acc %}
-        <p>Accuracy for fold - {{ loop.index }}:</p>
-        <b>{{ table }} %</b>
-        <br> {% endfor %}
-        <br> {% endif %} {% if choice == 1 or choice == 0%}
-        <p>Classification Report: </p>
-        {% for table in report %} {{ table|safe }} {% endfor %} {% else %}
-        <h3>Classification Reports: </h3>
-        {% for x in report %}
-        <p>Classification Report for fold - {{ loop.index }}:</p>
-        {% for table in x %} {{ table|safe }} {% endfor %}
-        <br> {% endfor %} {% endif %}
+<div style="margin-left:350px;">
+    {% if classifier_used == 0 %}
+    <div class="card mb-3">
+        <div class="card-header">Classifier used : Logistic Regression {% elif classifier_used == 1%}
+            <div class="card mb-3">
+                <div class="card-header">
+                    Classifier used : Naïve-Bayes Classifier {% elif classifier_used == 2 %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Classifier used : Linear-SV Classifier {% endif %}
+                        </div>
+                        <div class="card-body">
+                            {% if choice == 1 or choice == 0 %}
+                            <h3>Accuracy is: <b>{{acc}} %</b></h3>
+                            {% elif choice==2 %}
+                            <h3>Accuracies: </h3>
+                            {% for table in acc %}
+                            <h4>Accuracy for fold - {{ loop.index }}:</h4>
+                            <b>{{ table }} %</b> {% endfor %} {% endif %}
+                        </div>
+                    </div>
 
 
-        <br> {% if choice == 1 or choice == 0 %}
-        <p>Confusion Matrix: </p>
-        {% for table in conf_matrix %} {{ table|safe }} {% endfor %} {% else %}
-        <h3>Confusion Matrices: </h3>
-        {% for x in conf_matrix %}
-        <p>Confusion Matrix for fold - {{ loop.index }}:</p>
-        {% for table in x %} {{ table|safe }} {% endfor %}
-        <br> {% endfor %} {% endif %}
+                    {% if choice == 1 or choice == 0%}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Classification Report:
+                        </div>
+                        <div class="card-body table-responsive">
+                            {% for table in report %} {{ table|safe }} {% endfor %}
+                        </div>
+                    </div>
+                    {% elif choice==2 %}
+
+                    <h3>Classification Reports: </h3>
+                    {% for x in report %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Classification Report for fold - {{ loop.index }}:
+                        </div>
+                        <div class="card-body table-responsive">
+                            {% for table in x %} {{ table|safe }} {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %} {% if choice == 1 or choice == 0 %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Confusion Matrix:
+                        </div>
+                        <div class="card-body table-responsive">
+                            {% for table in conf_matrix %} {{ table|safe }} {% endfor %}
+                        </div>
+                    </div>
+
+                    {% elif choice==2 %}
+
+                    <h3>Confusion Matrices: </h3>
+
+                    {% for x in conf_matrix %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Confusion Matrix for fold - {{ loop.index }}:
+                        </div>
+                        <div class="card-body table-responsive">
+                            {% for table in x %} {{ table|safe }} {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
 
 
-        <script>
-            function create(choice) {
-                var divClass = document.getElementById("choiceDiv");
-                while (divClass.hasChildNodes()) {
-                    divClass.removeChild(divClass.firstChild);
-                }
-                var label = document.createElement("label");
+                    <script>
+                        function create(choice) {
+                            var divClass = document.getElementById("choiceDiv");
+                            while (divClass.hasChildNodes()) {
+                                divClass.removeChild(divClass.firstChild);
+                            }
+                            var label = document.createElement("label");
+                            label.className = "text-white"
 
-                var newChoice = document.createElement("input");
-                newChoice.id = "choiceVal";
-                newChoice.name = "choiceVal";
+                            var newChoice = document.createElement("input");
+                            newChoice.id = "choiceVal";
+                            newChoice.name = "choiceVal";
+                            newChoice.className = "form-control"
 
-                var hiddenTag = document.createElement("input");
-                hiddenTag.name = "hidden";
-                hiddenTag.id = "hidden";
-                hiddenTag.setAttribute("value", choice);
-                hiddenTag.style.visibility = "hidden";
+                            var hiddenTag = document.createElement("input");
+                            hiddenTag.name = "hidden";
+                            hiddenTag.id = "hidden";
+                            hiddenTag.className = "form-control"
+                            hiddenTag.setAttribute("value", choice);
+                            hiddenTag.style.visibility = "hidden";
 
-                if (choice == 0) {
-                    label.innerHTML = "Upload Test Data:";
-                    newChoice.setAttribute("type", "file");
-                } else if (choice == 1) {
-                    label.innerHTML = "Enter Test set Split Percentage:";
-                    newChoice.setAttribute("type", "text");
-                } else {
-                    label.innerHTML = "Enter k value for K-Fold";
-                    newChoice.setAttribute("type", "text");
-                }
+                            if (choice == 0) {
+                                label.innerHTML = "Upload Test Data:";
+                                newChoice.setAttribute("type", "file");
+                            } else if (choice == 1) {
+                                label.innerHTML = "Enter Test set Split Percentage:";
+                                newChoice.setAttribute("type", "text");
+                            } else {
+                                label.innerHTML = "Enter k value for K-Fold";
+                                newChoice.setAttribute("type", "text");
+                            }
 
-                divClass.appendChild(label);
-                divClass.appendChild(document.createElement("br"));
-                divClass.appendChild(newChoice);
-                divClass.appendChild(hiddenTag);
-            }
+                            divClass.appendChild(label);
+                            divClass.appendChild(document.createElement("br"));
+                            divClass.appendChild(newChoice);
+                            divClass.appendChild(hiddenTag);
+                        }
 
-            function update(choice) {
-                if (choice == 0) {
-                    var enc = document.getElementById('scale');
-                    var hid = document.getElementById('scale_hidden');
-                    if (enc.checked) {
-                        hid.setAttribute("value", "1");
-                    } else {
-                        hid.setAttribute("value", "0");
-                    }
-                } else {
-                    var enc = document.getElementById('encode');
-                    var hid = document.getElementById('encode_hidden');
-                    if (enc.checked) {
-                        hid.setAttribute("value", "1");
-                    } else {
-                        hid.setAttribute("value", "0");
-                    }
-                }
-            }
-        </script>
-    </div>
-</div>
+                        function update(choice) {
+                            if (choice == 0) {
+                                var enc = document.getElementById('scale');
+                                var hid = document.getElementById('scale_hidden');
+                                if (enc.checked) {
+                                    hid.setAttribute("value", "1");
+                                } else {
+                                    hid.setAttribute("value", "0");
+                                }
+                            } else {
+                                var enc = document.getElementById('encode');
+                                var hid = document.getElementById('encode_hidden');
+                                if (enc.checked) {
+                                    hid.setAttribute("value", "1");
+                                } else {
+                                    hid.setAttribute("value", "0");
+                                }
+                            }
+                        }
+                    </script>
 
-{% endblock content %}
+
+                </div>
+
+                {% endblock content %}

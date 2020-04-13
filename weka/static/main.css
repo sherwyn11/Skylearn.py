@@ -44,10 +44,9 @@ h6 {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 20px;
 }
 
 .sidenav a {
@@ -57,6 +56,27 @@ h6 {
     color: #818181;
     display: block;
     transition: 0.3s;
+}
+
+.sidenav .form-group {
+    padding: 8px 16px 8px 16px;
+    text-decoration: none;
+    color: #919191;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav .input-group {
+    margin: 8px 8px 8px 16px;
+    transition: 0.3s;
+}
+
+.sidenav .input-group:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .form-group:hover {
+    color: #f1f1f1;
 }
 
 .sidenav a:hover {
