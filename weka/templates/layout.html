@@ -11,10 +11,11 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> {% if title %}
-    <title>Skylearn.py - {{ title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    {% if title %}
+        <title>Skylearn.py - {{ title }}</title>
     {% else %}
-    <title>Skylearn.py</title>
+        <title>Skylearn.py</title>
     {% endif %}
 
 </head>
@@ -47,56 +48,61 @@
     </header>
     {%if active=='classify'%}
     <div id="mySidenav" class="sidenav bg-dark" style="margin-top: 56px; width:350px;">
-        <form id="myForm" method="POST" action="/classify" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="classifier">Classifier</label><br>
-                <select class="form-control" name="classifier" id="classifier">
-            <option value="0">Logistic</option>
-            <option value="1">Naïve-Bayes Classifier</option>
-            <option value="2">Linear-SV Classifier</option>
-            </select>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="chooseTestMethod">Choose Test Method</label><br>
-                <select class="form-control" name="chooseTestMethod" id="chooseTestMethod" onchange="create(this.value)">
-                  <option class="dropdown-item" disabled selected>Choose</option>
-                  <option class="dropdown-item" value="0">Upload Test</option>
-                  <option class="dropdown-item" value="1">Split Dataset</option>
-                  <option class="dropdown-item" value="2">Provide Cross Validation</option>
+        <a href="javascript:void(0)" id="close" class="closebtn" onclick="closeNav()">&times;</a>
+        <div id="myFormDiv">
+            <form id="myForm" method="POST" action="/classify" enctype="multipart/form-data" style="margin-top: 40px;">
+                <div class="form-group">
+                    <label for="classifier">Classifier</label><br>
+                    <select class="form-control" name="classifier" id="classifier">
+                <option value="0">Logistic</option>
+                <option value="1">Naïve-Bayes Classifier</option>
+                <option value="2">Linear-SV Classifier</option>
                 </select>
-            </div>
-            <br>
-            <div class="form-group">
-                <div id="choiceDiv" name="choiceDiv"></div>
-            </div>
-            <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="checkbox" id="scale" name="scale" onchange="update(0)">
-                    </div>
                 </div>
-                <div class="form-control" style="margin-right: 32px;">Scale?</div>
-            </div>
-            <input type="hidden" name="scale_hidden" id="scale_hidden" value="0" />
-
-            <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="checkbox" id="encode" name="encode" onchange="update(1)">
-
-                    </div>
+                <br>
+                <div class="form-group">
+                    <label for="chooseTestMethod">Choose Test Method</label><br>
+                    <select class="form-control" name="chooseTestMethod" id="chooseTestMethod" onchange="create(this.value)">
+                    <option class="dropdown-item" disabled selected>Choose</option>
+                    <option class="dropdown-item" value="0">Upload Test</option>
+                    <option class="dropdown-item" value="1">Split Dataset</option>
+                    <option class="dropdown-item" value="2">Provide Cross Validation</option>
+                    </select>
                 </div>
-                <div class="form-control" style="margin-right: 32px;">Encode?</div>
-            </div>
-            <input type="hidden" name="encode_hidden" id="encode_hidden" value="0" />
+                <br>
+                <div class="form-group">
+                    <div id="choiceDiv" name="choiceDiv"></div>
+                </div>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" id="scale" name="scale" onchange="update(0)">
+                        </div>
+                    </div>
+                    <div class="form-control" style="margin-right: 32px;">Scale?</div>
+                </div>
+                <input type="hidden" name="scale_hidden" id="scale_hidden" value="0" />
 
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Start</button>
-            </div>
-        </form><br>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" id="encode" name="encode" onchange="update(1)">
+
+                        </div>
+                    </div>
+                    <div class="form-control" style="margin-right: 32px;">Encode?</div>
+                </div>
+                <input type="hidden" name="encode_hidden" id="encode_hidden" value="0" />
+
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit">Start</button>
+                </div>
+            </form><br>
+        </div>
     </div>
-    <i class="fa fa-cog fa-spin" width="50" height="50" class="d-inline-block align-top" style="margin-left: 60px;" onclick="openNav()"></i> {%endif%}
+    <i class="fa fa-arrow-right" class="d-inline-block align-top" style="margin-left: 60px;" onclick="openNav()"></i> 
+    <span class="sr-only">Battery level: 100%</span>
+    {%endif%}
     <main id="main" role="main" class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -112,14 +118,22 @@
     <script>
         /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
         function openNav() {
+            var x = document.getElementById('myFormDiv');
+            var buttonClose = document.getElementById('close');
+            x.style.display = "block";
+            buttonClose.style.display = "block";
             document.getElementById("mySidenav").style.width = "350px";
             document.getElementById("main").style.marginLeft = "350px";
         }
 
         /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
         function closeNav() {
-            document.getElementById("mySidenav").style.width = "0px";
-            document.getElementById("main").style.marginLeft = "0px";
+            var x = document.getElementById('myFormDiv');
+            var buttonClose = document.getElementById('close');
+            x.style.display = "none";
+            buttonClose.style.display = "none";
+            document.getElementById("mySidenav").style.width = "50px";
+            document.getElementById("main").style.marginLeft = "50px";
         }
     </script>
 

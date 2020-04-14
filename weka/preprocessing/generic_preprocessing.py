@@ -1,7 +1,6 @@
 from flask import session, flash
 import pandas as pd
 import numpy as np
-import missingno as msno
 
 def read_dataset(filepath):
 
