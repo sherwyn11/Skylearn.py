@@ -175,3 +175,12 @@ def label_encoder(df, columns):
         df[c] = lbl.transform(list(df[c].values.astype("str")))
         le_dict[c] = lbl
     return df, le_dict
+
+
+def arrange_columns(target):
+    df = read_dataset('weka/clean/clean.csv')
+    cols = df.columns.tolist()
+    ind = cols.index(target)
+    cols[ind], cols[-1] = cols[-1], cols[ind]        
+    df = df[cols]
+    df.to_csv('weka/clean/clean.csv', mode = 'w', index = False)

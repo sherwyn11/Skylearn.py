@@ -11,13 +11,30 @@
 <div style="margin-left:350px;">
     {% if classifier_used == 0 %}
     <div class="card mb-3">
-        <div class="card-header">Classifier used : Logistic Regression {% elif classifier_used == 1%}
-            <div class="card mb-3">
-                <div class="card-header">
-                    Classifier used : Naïve-Bayes Classifier {% elif classifier_used == 2 %}
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Classifier used : Linear-SV Classifier {% endif %}
+        <div class="card-header">Classifier used : Logistic Regression 
+    {% elif classifier_used == 1%}
+        <div class="card mb-3">
+            <div class="card-header">
+                    Classifier used : Naïve-Bayes Classifier 
+    {% elif classifier_used == 2 %}
+        <div class="card mb-3">
+            <div class="card-header">
+                            Classifier used : Linear-SV Classifier 
+    {% elif classifier_used == 3 %}
+        <div class="card mb-3">
+            <div class="card-header">
+                            Classifier used : KNN Classifier 
+    {% elif classifier_used == 4 %}
+        <div class="card mb-3">
+            <div class="card-header">
+                            Classifier used : Decision Tree Classifier
+    {% elif classifier_used == 5 %}
+        <div class="card mb-3">
+            <div class="card-header">
+                            Classifier used : Random Forest Classifier
+     
+    
+    {% endif %}
                         </div>
                         <div class="card-body">
                             {% if choice == 1 or choice == 0 %}
