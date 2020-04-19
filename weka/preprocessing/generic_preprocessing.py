@@ -181,6 +181,5 @@ def arrange_columns(target):
     cols = df.columns.tolist()
     ind = cols.index(target)
     cols[ind], cols[-1] = cols[-1], cols[ind]        
-    print(cols)
     df = df[cols]
     df.to_csv('weka/clean/clean.csv', mode = 'w', index = False)
