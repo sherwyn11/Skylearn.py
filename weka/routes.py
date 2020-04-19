@@ -117,10 +117,13 @@ def preprocess():
 def classify():
     acc = 0
     if request.method == "POST":
+        target = request.form["target"]
+        gp.arrange_columns(target)
         classifier = int(request.form["classifier"])
         hidden_val = int(request.form["hidden"])
         scale_val = int(request.form["scale_hidden"])
         encode_val = int(request.form["encode_hidden"])
+        columns = vis.get_columns()
 
         if hidden_val == 0:
             data = request.files["choiceVal"]
@@ -164,7 +167,8 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -175,7 +179,8 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
 
         elif classifier == 1:
@@ -209,7 +214,8 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -220,7 +226,8 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
 
         elif classifier == 2:
@@ -254,7 +261,8 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -265,11 +273,13 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
-                    title="Classify"
+                    title="Classify",
+                    cols = columns
                 )
 
     elif request.method == "GET":
-        return render_template("classifier_page.html", active="classify", title="Classify")
+        columns = vis.get_columns()
+        return render_template("classifier_page.html", active="classify", title="Classify", cols = columns)
 
 
 @app.route("/clear", methods=["GET"])

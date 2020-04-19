@@ -59,7 +59,6 @@
                 <option value="2">Linear-SV Classifier</option>
                 </select>
                 </div>
-                <br>
                 <div class="form-group">
                     <label for="chooseTestMethod">Choose Test Method</label><br>
                     <select class="form-control" name="chooseTestMethod" id="chooseTestMethod" onchange="create(this.value)">
@@ -73,6 +72,15 @@
                 <div class="form-group">
                     <div id="choiceDiv" name="choiceDiv"></div>
                 </div>
+                <div class="form-group">
+                        <label for="chooseTestMethod">Choose Target Attribute</label><br>
+                        <select name="target" class="form-control" >
+                            {% for each in cols %}
+                                <option value="{{each}}" {% if each == "target" %} selected {% endif %}>{{each}}</option>
+                            {% endfor %}
+                        </select>                
+                    </div>
+    
                 <div class="input-group mb-4">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
@@ -123,7 +131,7 @@
             x.style.display = "block";
             buttonClose.style.display = "block";
             document.getElementById("mySidenav").style.width = "350px";
-            document.getElementById("main").style.marginLeft = "350px";
+            // document.getElementById("main").style.marginLeft = "350px";
         }
 
         /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
