@@ -176,7 +176,6 @@ def label_encoder(df, columns):
         le_dict[c] = lbl
     return df, le_dict
 
-
 def arrange_columns(target):
     df = read_dataset('weka/clean/clean.csv')
     cols = df.columns.tolist()
