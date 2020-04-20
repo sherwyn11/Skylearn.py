@@ -1,11 +1,8 @@
 from flask import session, flash
 import pandas as pd
 import numpy as np
-<<<<<<< Updated upstream
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-=======
->>>>>>> Stashed changes
 
 def read_dataset(filepath):
 
@@ -189,4 +186,3 @@ def arrange_columns(target):
     cols[ind], cols[-1] = cols[-1], cols[ind]
     df = df[cols]
     df.to_csv("weka/clean/clean.csv", mode="w", index=False)
-
