@@ -19,13 +19,14 @@ from weka.nocache import nocache
 global posted
 save_path = "weka/uploads/"
 exts = ["csv", "json", "yaml"]
-posted=0
+posted = 0
+
 
 @app.route("/")
 @app.route("/preprocess", methods=["GET", "POST"])
 @nocache
 def preprocess():
-    
+
     if request.method == "POST":
 
         if request.form["Submit"] == "Upload":
@@ -75,11 +76,10 @@ def preprocess():
             global posted
             df = gp.read_dataset("weka/clean/clean.csv")
 
-            x_col= request.form['x_col']
-            
-            if( vis.hist_plot(df,x_col)):
-                posted=1
+            x_col = request.form["x_col"]
 
+            if vis.hist_plot(df, x_col):
+                posted = 1
 
     if session.get("haha") is not None:
         df = gp.read_dataset("weka/clean/clean.csv")
@@ -134,7 +134,7 @@ def classify():
         scale_val = int(request.form["scale_hidden"])
         encode_val = int(request.form["encode_hidden"])
         columns = vis.get_columns()
-        
+
         if hidden_val == 0:
             data = request.files["choiceVal"]
             ext = data.filename.split(".")[1]
@@ -189,7 +189,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
 
         elif classifier == 1:
@@ -224,7 +224,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -236,7 +236,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
 
         elif classifier == 2:
@@ -271,7 +271,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -283,13 +283,15 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
-                
+
         elif classifier == 3:
-          
-            scale_val=1
-            ret_vals = knn.KNearestNeighbours(choiceVal, hidden_val, scale_val, encode_val)
+
+            scale_val = 1
+            ret_vals = knn.KNearestNeighbours(
+                choiceVal, hidden_val, scale_val, encode_val
+            )
             if hidden_val == 0 or hidden_val == 1:
                 return render_template(
                     "classifier_page.html",
@@ -320,7 +322,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -332,9 +334,9 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
-                
+
         elif classifier == 4:
             ret_vals = dtree.DecisionTree(choiceVal, hidden_val, scale_val, encode_val)
             if hidden_val == 0 or hidden_val == 1:
@@ -367,7 +369,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -379,7 +381,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
         elif classifier == 5:
             ret_vals = rfc.RandomForest(choiceVal, hidden_val, scale_val, encode_val)
@@ -413,7 +415,7 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -425,12 +427,12 @@ def classify():
                     classifier_used=classifier,
                     active="classify",
                     title="Classify",
-                    cols = columns
+                    cols=columns,
                 )
     elif request.method == "GET":
-        columns=vis.get_columns()
+        columns = vis.get_columns()
         return render_template(
-            "classifier_page.html", active="classify", title="Classify",cols = columns
+            "classifier_page.html", active="classify", title="Classify", cols=columns
         )
 
 
@@ -483,13 +485,23 @@ def visualize():
             title="Visualize",
         )
 
+
 @app.route("/col.csv")
 @nocache
 def col():
-    return send_file('visualization/col.csv', mimetype='text/csv', as_attachment=True)
+    return send_file("visualization/col.csv", mimetype="text/csv", as_attachment=True)
 
 
 @app.route("/pairplot1.png")
 @nocache
 def pairplot1():
-    return send_file('static/img/pairplot1.png', mimetype='image/png', as_attachment=True)
+    return send_file(
+        "static/img/pairplot1.png", mimetype="image/png", as_attachment=True
+    )
+
+
+@app.route("/tree.png")
+@nocache
+def tree():
+    return send_file("static/img/tree.png", mimetype="image/png", as_attachment=True)
+

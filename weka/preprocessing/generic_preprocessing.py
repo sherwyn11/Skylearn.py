@@ -1,6 +1,8 @@
 from flask import session, flash
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
 
 def read_dataset(filepath):
 
@@ -52,9 +54,9 @@ def missing_value_analysis(df):
         - Chart of Missing value co-occurance
         - Chart of Missing value heatmap
     """
-    msno.matrix(df)
+    # msno.matrix(df)
 
-    msno.heatmap(df)
+    # msno.heatmap(df)
 
 
 def drop_allsame(df):
@@ -176,10 +178,12 @@ def label_encoder(df, columns):
         le_dict[c] = lbl
     return df, le_dict
 
+
 def arrange_columns(target):
-    df = read_dataset('weka/clean/clean.csv')
+    df = read_dataset("weka/clean/clean.csv")
     cols = df.columns.tolist()
     ind = cols.index(target)
-    cols[ind], cols[-1] = cols[-1], cols[ind]        
+    cols[ind], cols[-1] = cols[-1], cols[ind]
     df = df[cols]
-    df.to_csv('weka/clean/clean.csv', mode = 'w', index = False)
+    df.to_csv("weka/clean/clean.csv", mode="w", index=False)
+

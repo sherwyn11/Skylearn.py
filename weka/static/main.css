@@ -46,7 +46,12 @@ h6 {
     left: 0;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 20px;
+    padding-top: 8px;
+    -ms-overflow-style: none;
+}
+
+.sidenav::-webkit-scrollbar {
+    display: none;
 }
 
 .sidenav a {
@@ -59,7 +64,7 @@ h6 {
 }
 
 .sidenav .form-group {
-    padding: 8px 16px 8px 16px;
+    padding: 2px 16px 2px 16px;
     text-decoration: none;
     color: #919191;
     display: block;
@@ -67,7 +72,7 @@ h6 {
 }
 
 .sidenav .input-group {
-    margin: 8px 8px 8px 16px;
+    margin: 0px 8px 0px 16px;
     transition: 0.3s;
 }
 
@@ -98,7 +103,7 @@ h6 {
 
 @media screen and (max-height: 450px) {
     .sidenav {
-        padding-top: 15px;
+        padding-top: 10px;
     }
     .sidenav a {
         font-size: 18px;

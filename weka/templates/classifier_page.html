@@ -25,6 +25,7 @@
             <div class="card-header">
                             Classifier used : KNN Classifier 
     {% elif classifier_used == 4 %}
+        
         <div class="card mb-3">
             <div class="card-header">
                             Classifier used : Decision Tree Classifier
@@ -35,17 +36,20 @@
      
     
     {% endif %}
-                        </div>
-                        <div class="card-body">
-                            {% if choice == 1 or choice == 0 %}
-                            <h3>Accuracy is: <b>{{acc}} %</b></h3>
-                            {% elif choice==2 %}
-                            <h3>Accuracies: </h3>
-                            {% for table in acc %}
-                            <h4>Accuracy for fold - {{ loop.index }}:</h4>
-                            <b>{{ table }} %</b> {% endfor %} {% endif %}
-                        </div>
-                    </div>
+            </div>
+            {% if classifier_used == 4 %}
+            <img class="card-img-top" src="/tree.png" alt="Card image cap">
+            {% endif %}
+                <div class="card-body">
+                    {% if choice == 1 or choice == 0 %}
+                    <h3>Accuracy is: <b>{{acc}} %</b></h3>
+                    {% elif choice==2 %}
+                    <h3>Accuracies: </h3>
+                    {% for table in acc %}
+                    <h4>Accuracy for fold - {{ loop.index }}:</h4>
+                    <b>{{ table }} %</b> {% endfor %} {% endif %}
+                </div>
+            </div>
 
 
                     {% if choice == 1 or choice == 0%}
