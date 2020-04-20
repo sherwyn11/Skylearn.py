@@ -1,8 +1,11 @@
 from flask import session, flash
 import pandas as pd
 import numpy as np
+<<<<<<< Updated upstream
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
+=======
+>>>>>>> Stashed changes
 
 def read_dataset(filepath):
 

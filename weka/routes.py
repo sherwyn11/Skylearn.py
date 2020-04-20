@@ -14,7 +14,10 @@ from weka import app
 import os.path
 import numpy as np
 import pandas as pd
+<<<<<<< Updated upstream
 from weka.nocache import nocache
+=======
+>>>>>>> Stashed changes
 
 global posted
 save_path = "weka/uploads/"
@@ -177,7 +180,11 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -188,8 +195,12 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
                     cols=columns,
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
 
         elif classifier == 1:
@@ -223,8 +234,12 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
                     cols=columns,
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -235,8 +250,12 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
                     cols=columns,
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
 
         elif classifier == 2:
@@ -270,8 +289,12 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
                     cols=columns,
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
             elif hidden_val == 2:
                 return render_template(
@@ -282,8 +305,12 @@ def classify():
                     choice=hidden_val,
                     classifier_used=classifier,
                     active="classify",
+<<<<<<< Updated upstream
                     title="Classify",
                     cols=columns,
+=======
+                    title="Classify"
+>>>>>>> Stashed changes
                 )
 
         elif classifier == 3:
@@ -430,10 +457,14 @@ def classify():
                     cols=columns,
                 )
     elif request.method == "GET":
+<<<<<<< Updated upstream
         columns = vis.get_columns()
         return render_template(
             "classifier_page.html", active="classify", title="Classify", cols=columns
         )
+=======
+        return render_template("classifier_page.html", active="classify", title="Classify")
+>>>>>>> Stashed changes
 
 
 @app.route("/clear", methods=["GET"])
@@ -442,6 +473,7 @@ def clear():
     return redirect("/")
 
 
+<<<<<<< Updated upstream
 @app.route("/visualize", methods=["GET", "POST"])
 @nocache
 def visualize():
@@ -504,4 +536,46 @@ def pairplot1():
 @nocache
 def tree():
     return send_file("static/img/tree.png", mimetype="image/png", as_attachment=True)
+=======
+@app.route('/visualize', methods=['GET', 'POST'])
+def visualize():
+    if (request.method == 'POST'):
+        x_col = request.form['x_col']
+        y_col = request.form['y_col']
+>>>>>>> Stashed changes
 
+        df = vis.xy_plot(x_col, y_col)
+        heights = np.array(df[x_col]).tolist()
+        weights = np.array(df[y_col]).tolist()
+
+        newlist = []
+        for h, w in zip(heights, weights):
+            newlist.append({'x': h, 'y': w})
+        ugly_blob = str(newlist).replace('\'', '')
+
+        columns = vis.get_columns()
+        print(x_col)
+        return render_template(
+            'visualize.html', 
+            cols = columns, 
+            src = 'img/pairplot.png', 
+            xy_src = 'img/fig.png', 
+            posted = 1, 
+            data=ugly_blob, 
+            active = 'visualize',
+            x_col_name = str(x_col),
+            y_col_name = str(y_col),
+            title="Visualize"
+        )
+
+    else:
+        vis.pair_plot()
+        columns = vis.get_columns()
+        return render_template(
+            'visualize.html', 
+            cols = columns, 
+            src = 'img/pairplot.png', 
+            posted = 0, 
+            active = 'visualize',
+            title="Visualize"
+        )
