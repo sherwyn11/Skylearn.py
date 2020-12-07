@@ -1,9 +1,9 @@
-# Skylearn.py <img src="https://static.thenounproject.com/png/1870030-200.png" height="45px" width="45px"/>
+# Skylearn.py <img src="https://www.netanimations.net/large%20gears.gif" height="55px" width="55px"/>
 
 ## Overview:
 
-<p>Creating a web-based data-mining application for preprocessing, visualization and classification of data. The web app is based on ‘WEKA’ (Waikato Environment for Knowledge Analysis) , a very popular data-mining tool used for data pre-processing, classification, regression, clustering, association rules, and visualization.   
-A user can upload a dataset (.csv or .json). The dataset is first put through preprocessing. He/she can view the dataset, the description of the dataset, attributes (columns) of the dataset, etc. The user can also choose to drop some columns. The user also has a choice to clean the dataset, fill ‘NA’ values.</p>
+<p><b>Skylearn.py</b> is a web-based data-mining application for preprocessing, visualization and classification of data. The web app is based on <b>'WEKA'</b> (Waikato Environment for Knowledge Analysis), a very popular data-mining tool used for data pre-processing, classification, regression, clustering, association rules, and visualization.</p>   
+<p>A user can upload a dataset (.csv or .json). The dataset is first put through preprocessing. He/she can view the dataset, the description of the dataset, attributes (columns) of the dataset, etc. The user can also choose to drop some columns. The user also has a choice to clean the dataset, fill ‘NA’ values.</p>
 <p>The next feature is classification. For the web application, the ‘Linear Classification Family’, ‘Support Vector Classification Family’, ‘Tree Family’ and ‘Kernel Estimation Family’ of machine learning models were chosen.</p>
 <p>The <b>Linear Classification Family</b> contains the following models:</p>
 <ul>
