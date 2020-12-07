@@ -1,23 +1,24 @@
 import secrets
 import asyncio
-from shutil import copyfile
-from flask import *
-from weka.preprocessing import generic_preprocessing as gp
-from weka.modules import logistic as lg
-from weka.modules import naive_bayes as nb
-from weka.modules import linear_svc as lsvc
-from weka.modules import knn
-from weka.modules import decision_tree as dtree
-from weka.modules import random_forest as rfc
-from weka.visualization import visualize as vis
-from weka import app
 import os.path
 import numpy as np
 import pandas as pd
-from weka.nocache import nocache
+
+from shutil import copyfile
+from flask import *
+from skylearn.preprocessing import generic_preprocessing as gp
+from skylearn.modules import logistic as lg
+from skylearn.modules import naive_bayes as nb
+from skylearn.modules import linear_svc as lsvc
+from skylearn.modules import knn
+from skylearn.modules import decision_tree as dtree
+from skylearn.modules import random_forest as rfc
+from skylearn.visualization import visualize as vis
+from skylearn.nocache import nocache
+from skylearn import app
 
 global posted
-save_path = "weka/uploads/"
+save_path = "skylearn/uploads/"
 exts = ["csv", "json", "yaml"]
 posted = 0
 
@@ -35,9 +36,9 @@ def preprocess():
             if ext in exts:
                 session["ext"] = ext
                 session["fname"] = data.filename
-                data.save("weka/uploads/" + data.filename)
-                df = gp.read_dataset("weka/uploads/" + data.filename)
-                df.to_csv("weka/clean/clean.csv")
+                data.save("skylearn/uploads/" + data.filename)
+                df = gp.read_dataset("skylearn/uploads/" + data.filename)
+                df.to_csv("skylearn/clean/clean.csv")
                 session["haha"] = True
                 flash(f"File uploaded successully", "success")
             else:
@@ -45,16 +46,16 @@ def preprocess():
 
         elif request.form["Submit"] == "Delete":
             try:
-                df = gp.read_dataset("weka/clean/clean.csv")
+                df = gp.read_dataset("skylearn/clean/clean.csv")
                 df = gp.delete_column(df, request.form.getlist("check_cols"))
-                df.to_csv("weka/clean/clean.csv", mode="w", index=False)
+                df.to_csv("skylearn/clean/clean.csv", mode="w", index=False)
                 flash(f"Column(s) deleted Successfully", "success")
             except:
                 flash(f"Error! Upload Dataset", "danger")
 
         elif request.form["Submit"] == "Clean":
             try:
-                df = gp.read_dataset("weka/clean/clean.csv")
+                df = gp.read_dataset("skylearn/clean/clean.csv")
                 print(request.form["how"])
                 if request.form["how"] is not "any":
                     df = gp.treat_missing_numeric(
@@ -67,14 +68,14 @@ def preprocess():
                         how=float(request.form["howNos"]),
                     )
 
-                df.to_csv("weka/clean/clean.csv", mode="w", index=False)
+                df.to_csv("skylearn/clean/clean.csv", mode="w", index=False)
                 flash(f"Column(s) cleant Successfully", "success")
             except:
                 flash(f"Error! Upload Dataset", "danger")
 
         elif request.form["Submit"] == "Visualize":
             global posted
-            df = gp.read_dataset("weka/clean/clean.csv")
+            df = gp.read_dataset("skylearn/clean/clean.csv")
 
             x_col = request.form["x_col"]
 
@@ -82,7 +83,7 @@ def preprocess():
                 posted = 1
 
     if session.get("haha") is not None:
-        df = gp.read_dataset("weka/clean/clean.csv")
+        df = gp.read_dataset("skylearn/clean/clean.csv")
         description = gp.get_description(df)
         columns = gp.get_columns(df)
         print(columns)

@@ -12,7 +12,7 @@ from sklearn.metrics import (
     confusion_matrix,
     make_scorer,
 )
-from weka.preprocessing import generic_preprocessing as gprep
+from skylearn.preprocessing import generic_preprocessing as gprep
 
 classification_Reports = []
 confusion_Matrix = []
@@ -63,7 +63,7 @@ def DecisionTree(value, choice, scale_val, encode_val):
     accuracies.clear()
     target_Names.clear()
 
-    df = gprep.read_dataset("weka/clean/clean.csv")
+    df = gprep.read_dataset("skylearn/clean/clean.csv")
 
     X = df.iloc[:, 1:-1]
     y = df.iloc[:, -1]
@@ -114,7 +114,7 @@ def DecisionTree(value, choice, scale_val, encode_val):
         )
         fig = plt.gcf()
         fig.set_size_inches(20, 15)
-        fig.savefig("weka/static/img/tree.png")
+        fig.savefig("skylearn/static/img/tree.png")
 
         return [round(acc * 100, 2), data, matrix_data]
 
@@ -151,7 +151,7 @@ def DecisionTree(value, choice, scale_val, encode_val):
         )
         fig = plt.gcf()
         fig.set_size_inches(25, 15)
-        fig.savefig("weka/static/img/tree.png")
+        fig.savefig("skylearn/static/img/tree.png")
 
         return [accuracies, classification_Reports, confusion_Matrix]
 
@@ -205,6 +205,6 @@ def DecisionTree(value, choice, scale_val, encode_val):
         )
         fig = plt.gcf()
         fig.set_size_inches(25, 15)
-        fig.savefig("weka/static/img/tree.png")
+        fig.savefig("skylearn/static/img/tree.png")
 
         return [round(acc * 100, 2), data, matrix_data]

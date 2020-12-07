@@ -62,9 +62,9 @@ def logisticReg(value, choice, scale_val, encode_val):
     target_Names.clear()
 
     if session["ext"] == "csv":
-        df = pd.read_csv("weka/clean/clean.csv")
+        df = pd.read_csv("skylearn/clean/clean.csv")
     elif session["ext"] == "json":
-        df = pd.read_json("weka/clean/clean.json")
+        df = pd.read_json("skylearn/clean/clean.json")
 
     X = df.iloc[:, 1:-1]
     y = df.iloc[:, -1]
