@@ -1,4 +1,9 @@
 # Skylearn.py <img src="https://www.netanimations.net/large%20gears.gif" height="55px" width="55px"/>
+A simple Flask application for data preprocessing, visualization and classification.
+
+## Demo:
+
+[![DEMO VIDEO](https://img.youtube.com/vi/u6i-csfZawc/0.jpg)](https://www.youtube.com/watch?v=u6i-csfZawc)
 
 ## Overview:
 
